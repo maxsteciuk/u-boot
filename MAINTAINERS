@@ -122,6 +122,7 @@ F:	arch/arm/mach-apple/
 F:	configs/apple_m1_defconfig
 F:	drivers/iommu/apple_dart.c
 F:	drivers/nvme/nvme_apple.c
+F:	drivers/pci/pcie_apple.c
 F:	drivers/pinctrl/pinctrl-apple.c
 F:	drivers/watchdog/apple_wdt.c
 F:	include/configs/apple.h
@@ -149,6 +150,7 @@ L:	u-boot-amlogic@groups.io
 T:	git https://source.denx.de/u-boot/custodians/u-boot-amlogic.git
 F:	arch/arm/mach-meson/
 F:	arch/arm/include/asm/arch-meson/
+F:	cmd/meson/
 F:	drivers/clk/meson/
 F:	drivers/serial/serial_meson.c
 F:	drivers/reset/reset-meson.c
@@ -644,6 +646,7 @@ F:	drivers/soc/ti/
 F:	drivers/sysreset/sysreset-ti-sci.c
 F:	drivers/thermal/ti-bandgap.c
 F:	drivers/timer/omap-timer.c
+F:	drivers/video/tidss/
 F:	drivers/watchdog/omap_wdt.c
 F:	include/linux/pruss_driver.h
 F:	include/linux/soc/ti/
@@ -771,6 +774,12 @@ S:	Maintained
 F:	drivers/pci/pcie_phytium.c
 F:	arch/arm/dts/phytium-durian.dts
 
+ASPEED AST2600 I2C DRIVER
+M:	Ryan Chen <ryan_chen@aspeedtech.com>
+R:	Aspeed BMC SW team <BMC-SW@aspeedtech.com>
+S:	Maintained
+F:	drivers/i2c/ast2600_i2c.c
+
 ASPEED FMC SPI DRIVER
 M:	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
 M:	Cédric Le Goater <clg@kaod.org>
@@ -841,7 +850,7 @@ F:	drivers/clk/imx/
 
 COLDFIRE
 M:	Huan Wang <alison.wang@nxp.com>
-M:	Angelo Dureghello <angelo@sysam.it>
+M:	Angelo Dureghello <angelo@kernel-space.org>
 S:	Maintained
 T:	git https://source.denx.de/u-boot/custodians/u-boot-coldfire.git
 F:	arch/m68k/
@@ -1245,6 +1254,7 @@ M:	Jaehoon Chung <jh80.chung@samsung.com>
 S:	Maintained
 T:	git https://source.denx.de/u-boot/custodians/u-boot-pmic.git
 F:	drivers/power/
+F:	include/power/
 
 POWERPC
 M:	Wolfgang Denk <wd@denx.de>
@@ -1288,6 +1298,7 @@ S:	Maintained
 T:	git https://source.denx.de/u-boot/custodians/u-boot-riscv.git
 F:	arch/riscv/
 F:	cmd/riscv/
+F:	doc/arch/riscv.rst
 F:	doc/usage/sbi.rst
 F:	drivers/sysreset/sysreset_sbi.c
 F:	drivers/timer/andes_plmt_timer.c
@@ -1326,6 +1337,13 @@ S:	Maintained
 F:	arch/sandbox/
 F:	doc/arch/sandbox.rst
 F:	include/dt-bindings/*/sandbox*.h
+
+SEAMA
+M:	Linus Walleij <linus.walleij@linaro.org>
+S:	Maintained
+F:	cmd/seama.c
+F:	doc/usage/cmd/seama.rst
+F:	test/cmd/seama.c
 
 SEMIHOSTING
 R:	Sean Anderson <sean.anderson@seco.com>

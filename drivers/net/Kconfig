@@ -242,6 +242,13 @@ config DWC_ETH_QOS_TEGRA186
 	  The Synopsys Designware Ethernet QOS IP block with specific
 	  configuration used in NVIDIA's Tegra186 chip.
 
+config DWC_ETH_QOS_QCOM
+	bool "Synopsys DWC Ethernet QOS device support for Qcom SoCs"
+	depends on DWC_ETH_QOS
+	help
+	  The Synopsys Designware Ethernet QOS IP block with specific
+	  configuration used in Qcom QCS404 SoC.
+
 config E1000
 	bool "Intel PRO/1000 Gigabit Ethernet support"
 	depends on PCI
@@ -406,6 +413,7 @@ config FSL_FM_10GEC_REGULAR_NOTATION
 
 config FTMAC100
 	bool "Ftmac100 Ethernet Support"
+	select MII
 	help
 	  This MAC is present in Andestech SoCs.
 
@@ -472,6 +480,13 @@ config LITEETH
 	bool "LiteX LiteEth Ethernet MAC"
 	help
 	 Driver for the LiteEth Ethernet MAC from LiteX.
+
+config MV88E6XXX
+	bool "Marvell MV88E6xxx Ethernet switch DSA driver"
+	depends on DM_DSA && DM_MDIO
+	help
+	  This driver implements a DSA switch driver for the MV88E6xxx family
+	  of Ethernet switches using the MDIO interface
 
 config MVGBE
 	bool "Marvell Orion5x/Kirkwood network interface support"
