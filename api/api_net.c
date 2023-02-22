@@ -56,7 +56,7 @@ int dev_close_net(void *cookie)
 int dev_enum_net(struct device_info *di)
 {
 	struct eth_device *eth_current = eth_get_dev();
-
+ 
 	di->type = DEV_TYP_NET;
 	di->cookie = (void *)eth_current;
 	if (di->cookie == NULL)
@@ -86,29 +86,59 @@ int dev_read_net(void *cookie, void *buf, int len)
 
 #else
 
+#include "dm.h"
+
+static int dev_valid_net(void *cookie)
+{
+        return ((void *)eth_get_dev() == cookie) ? 1 : 0;
+}
+
 int dev_open_net(void *cookie)
 {
-	return API_ENODEV;
+	if (!dev_valid_net(cookie))
+		return API_ENODEV;
+
+	if (eth_init() < 0)
+		return API_EIO; 
+        return 0;
 }
 
 int dev_close_net(void *cookie)
 {
-	return API_ENODEV;
+	if (!dev_valid_net(cookie))
+		return API_ENODEV;
+
+	eth_halt();
+        return 0;
 }
 
 int dev_enum_net(struct device_info *di)
 {
-	return 0;
+        di->type = DEV_TYP_NET;
+        di->cookie = (void *)eth_get_dev();
+        if (di->cookie == NULL)
+                return 0;
+
+        unsigned char env_enetaddr[ARP_HLEN];
+        eth_env_get_enetaddr_by_index("eth", dev_seq(eth_get_dev()), env_enetaddr);
+        memcpy(di->di_net.hwaddr, env_enetaddr, ARP_HLEN);
+
+        debugf("device found, returning cookie 0x%08x\n",
+                (u_int32_t)di->cookie);
+
+        return 1;
 }
+
 
 int dev_write_net(void *cookie, void *buf, int len)
 {
-	return API_ENODEV;
+        int rc = eth_send(buf, len);
+	return rc;
 }
 
 int dev_read_net(void *cookie, void *buf, int len)
 {
-	return API_ENODEV;
+        return eth_rx();
 }
 
 #endif

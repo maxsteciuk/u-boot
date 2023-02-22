@@ -102,6 +102,7 @@ static const table_entry_t uimage_arch[] = {
 static const table_entry_t uimage_os[] = {
 	{	IH_OS_INVALID,	"invalid",	"Invalid OS",		},
 	{       IH_OS_ARM_TRUSTED_FIRMWARE, "arm-trusted-firmware", "ARM Trusted Firmware"  },
+        {       IH_OS_FREEBSD,  "freebsd",      "FreeBSD",              },
 	{	IH_OS_LINUX,	"linux",	"Linux",		},
 	{	IH_OS_NETBSD,	"netbsd",	"NetBSD",		},
 	{	IH_OS_OSE,	"ose",		"Enea OSE",		},

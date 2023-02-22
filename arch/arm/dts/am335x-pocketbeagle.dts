@@ -221,7 +221,7 @@
 
 &usb0 {
 	status = "okay";
-	dr_mode = "otg";
+	dr_mode = "peripheral";
 };
 
 &usb1_phy {

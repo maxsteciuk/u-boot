@@ -136,6 +136,58 @@ static int do_bootm_netbsd(int flag, int argc, char *const argv[],
 }
 #endif /* CONFIG_BOOTM_NETBSD*/
 
+static int do_bootm_freebsd(int flag, int argc, char *const argv[],
+                            struct bootm_headers *images)
+{
+        void (*loader)(struct bd_info *, image_header_t *, char *, char *);
+        image_header_t *os_hdr, *hdr;
+        ulong kernel_data, kernel_len;
+        char *cmdline;
+
+        if (flag != BOOTM_STATE_OS_GO)
+                return 0;
+
+#if defined(CONFIG_FIT)
+        if (!images->legacy_hdr_valid) {
+                fit_unsupported_reset("FreeBSD");
+                return 1;
+        }
+#endif
+        hdr = images->legacy_hdr_os;
+
+        os_hdr = NULL;
+        if (image_check_type(&images->legacy_hdr_os_copy, IH_TYPE_MULTI)) {
+                image_multi_getimg(hdr, 1, &kernel_data, &kernel_len);
+                if (kernel_len)
+                        os_hdr = hdr;
+        }
+
+        if (argc > 0) {
+                ulong len;
+                int   i;
+
+                for (i = 0, len = 0; i < argc; i += 1)
+                        len += strlen(argv[i]) + 1;
+                cmdline = malloc(len);
+                copy_args(cmdline, argc, argv, ' ');
+        } else {
+                cmdline = env_get("bootargs");
+                if (cmdline == NULL)
+                        cmdline = "";
+        }
+
+        loader = (void (*)(struct bd_info *, image_header_t *, char *, char *))images->ep;
+
+        printf("## Transferring control to FreeBSD stage-2 loader (at address %08lx) ...\n",
+               (ulong)loader);
+
+        bootstage_mark(BOOTSTAGE_ID_RUN_OS);
+
+        (*loader)(gd->bd, os_hdr, "", cmdline);
+
+        return 1;
+}
+
 #ifdef CONFIG_BOOTM_RTEMS
 static int do_bootm_rtems(int flag, int argc, char *const argv[],
 			  struct bootm_headers *images)
@@ -575,6 +627,7 @@ static boot_os_fn *boot_os[] = {
 #ifdef CONFIG_BOOTM_EFI
 	[IH_OS_EFI] = do_bootm_efi,
 #endif
+        [IH_OS_FREEBSD] = do_bootm_freebsd,
 };
 
 /* Allow for arch specific config before we boot */
